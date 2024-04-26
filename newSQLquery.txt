@@ -1,0 +1,53 @@
+/* Query 1 - query used for first insight /
+SELECT
+  a.title
+ ,r.name
+ ,SUM(i.quantity) AS Units_Sold
+FROM Artist AS r
+JOIN Album AS a
+  ON a.artistid = r.artistid
+JOIN Track AS t
+  ON a.albumid = t.albumid
+JOIN InvoiceLine AS i
+  ON t.trackid = i.trackid
+GROUP BY a.title
+        ,r.name
+ORDER BY Units_Sold DESC
+LIMIT 3;
+
+/* Query 2 - query used for second insight /
+SELECT
+  c.Country
+ ,COUNT(DISTINCT c.CustomerId) AS Total_Customers
+FROM Customer AS c
+JOIN Invoice AS i
+  ON c.CustomerId = i.CustomerId
+GROUP BY 1
+ORDER BY 2 DESC;
+
+/* Query 3 - query used for third insight /
+SELECT
+  m.name
+ ,COUNT(*) AS customers
+FROM Customer AS c
+JOIN Invoice AS i
+  ON c.CustomerId = i.CustomerId
+JOIN InvoiceLine AS il
+  ON i.InvoiceId = il.InvoiceId
+JOIN Track AS t
+  ON il.trackid = t.trackid
+JOIN MediaType AS m
+  ON t.mediatypeid = m.mediatypeid
+GROUP BY 1
+ORDER BY customers DESC;
+
+/* Query 4 - query used for forth insight /
+SELECT
+  CONCAT(c.FirstName, ' ', c.LastName) AS Name
+ ,SUM(i.total) AS Total_spent
+FROM Customer AS c
+JOIN Invoice AS i
+  ON c.CustomerId = i.CustomerId
+GROUP BY Name
+ORDER BY Total_spent DESC
+LIMIT 5;
